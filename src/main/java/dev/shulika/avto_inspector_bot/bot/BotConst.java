@@ -7,6 +7,8 @@ public class BotConst {
 start - Старт
 contact - Контакты
 help - Помощь
+
+*post - Создать пост
 */
 
     // COMMANDS ---------------------------------------
