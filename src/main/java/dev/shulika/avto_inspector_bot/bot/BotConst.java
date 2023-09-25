@@ -2,6 +2,26 @@ package dev.shulika.avto_inspector_bot.bot;
 
 public class BotConst {
 
+/*
+ :::::  Telegram List Commands  :::::
+start - Старт
+contact - Контакты
+help - Помощь
+*/
+
+    // COMMANDS ---------------------------------------
+    public static final String COMMAND_START = "/start";
+    public static final String COMMAND_CONTACT = "/contact";
+    public static final String COMMAND_HELP = "/help";
+
+    // INLINE COMMANDS ----------------------------------
+//    /start@avto_Inspector_bot
+//    /contact@avto_Inspector_bot
+//    /help@avto_Inspector_bot
+
+    // Messages ---------------------------------------
+    public static final String UNSUPPORTED_MSG = "Неподдерживаемый тип сообщения";
+    public static final String CONTACT_MSG = " ✏️ Контакты Администратора: https://t.me/LPR_Inspectors";
     public static final String HELP_MSG = """
             Доброго времени суток 💪
             🪙 СТОИМОСТЬ ПУБЛИКАЦИИ АВТО 300₽
