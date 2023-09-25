@@ -1,0 +1,7 @@
+server:
+  port: 8081
+
+bot:
+  name: avto_Inspector_bot
+  token: 6518433545:AAEPpXf6v3kntj2Yfp9SW4OAQG4a93pgVgs
+  #  owner: 5580936952
