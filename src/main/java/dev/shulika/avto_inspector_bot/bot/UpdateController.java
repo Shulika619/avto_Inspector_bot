@@ -25,8 +25,7 @@ public class UpdateController {
         if (update == null) {
             log.error("--- IN UpdateController :: processUpdate update :: Received update is null");
             return;
-        }
-        if (update.hasMessage()) {
+        } else if (update.hasMessage()) {
             distributeMessagesByType(update);
         } else if (update.hasCallbackQuery()) {
             distributeCallbackQuery(update);
@@ -41,8 +40,8 @@ public class UpdateController {
         } else if (update.getMessage().hasPhoto()) {
             processMessagePhoto(update);
         } else {
-            log.error("--- IN UpdateController :: distributeMessagesByType :: UNSUPPORTED Message");
-            executeSendMessage(messageUtils.generateMessageWithText(update.getMessage(), UNSUPPORTED_MSG));
+            log.error("--- IN UpdateController :: distributeMessagesByType :: Some text - UNSUPPORTED Message");
+//            executeSendMessage(messageUtils.generateMessageWithText(update.getMessage(), UNSUPPORTED_MSG));
         }
     }
 
@@ -50,11 +49,14 @@ public class UpdateController {
         var messageText = update.getMessage().getText();
         log.info("+++ IN UpdateController :: processMessageText :: hasText - {}", messageText);
         switch (messageText) {
-            case COMMAND_START ->
-                    executeSendMessage(messageUtils.generateMessageWithText(update.getMessage(), HELP_MSG));
+            case COMMAND_START -> executeSendMessage(messageUtils.generateMessageWithBtnLink(
+                    update.getMessage(), BTN_PAID, ADMIN_LINK, HELP_MSG
+            ));
             case COMMAND_CONTACT ->
                     executeSendMessage(messageUtils.generateMessageWithText(update.getMessage(), CONTACT_MSG));
             case COMMAND_HELP ->
+                    executeSendMessage(messageUtils.generateMessageWithText(update.getMessage(), HELP_MSG));
+            case COMMAND_POST ->
                     executeSendMessage(messageUtils.generateMessageWithText(update.getMessage(), HELP_MSG));
         }
     }
@@ -62,8 +64,19 @@ public class UpdateController {
     private void processMessagePhoto(Update update) {
         log.info("+++ IN UpdateController :: processMessagePhoto :: hasPhoto");
     }
+
     private void distributeCallbackQuery(Update update) {
         log.info("+++ IN UpdateController :: processUpdate :: hasCallbackQuery");
+        var query = update.getCallbackQuery();
+        var queryData = query.getData();
+        var message = query.getMessage();
+        String[] param = queryData.split(":");
+        String action = param[0];
+        String value = param[1];
+
+        switch (action) {
+            case BTN_PAID_CALLBACK -> System.out.println("BTN_PAID_CALLBACK");
+        }
     }
 
     private void executeSendMessage(SendMessage sendMessage) {

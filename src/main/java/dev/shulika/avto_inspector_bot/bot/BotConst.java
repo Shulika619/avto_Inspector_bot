@@ -8,8 +8,14 @@ start - Старт
 contact - Контакты
 help - Помощь
 
-*post - Создать пост
+?post - Создать пост
+?send - Отправить объявление
 */
+
+    // ADMIN ---------------------------------------
+    public static final String ADMIN_LINK = "https://t.me/LPR_Inspectors";
+    public static final String COMMAND_POST = "/post";
+
 
     // COMMANDS ---------------------------------------
     public static final String COMMAND_START = "/start";
@@ -61,4 +67,9 @@ help - Помощь
             13. Фото до 10 шт.
             ⚠️❗️ Обязательно отправьте скрин/чек оплаты ❗️⚠️
             """;
+
+    // Buttons and CallBackData---------------------------------
+    public static final String BTN_PAID = "✅ Уже оплатил и готов разместить обьявление ✅";
+    public static final String BTN_PAID_CALLBACK = "ACCEPT_PAID";
+
 }
