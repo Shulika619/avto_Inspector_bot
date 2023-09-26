@@ -9,11 +9,16 @@ An application for the administration of the Telegram community for the publicat
 - Java 17
 - Spring Boot
 - Spring Web
+- Spring Security
 - Telegram Bot API
 - Spring Data Jpa
 - PostgreSQL
+- Flyway
 - Mapstruct
 - Validation
+- Thymeleaf
+- Bootstrap
+- Font-awesome
 - Lombok
 - Maven
 - Git/GitHub
