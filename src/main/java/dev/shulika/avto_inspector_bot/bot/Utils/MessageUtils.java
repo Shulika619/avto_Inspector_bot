@@ -1,25 +1,37 @@
 package dev.shulika.avto_inspector_bot.bot.Utils;
 
+import dev.shulika.avto_inspector_bot.bot.TelegramBot;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Component
+@Slf4j
 public class MessageUtils {
-    public SendMessage generateMessageWithText(Message message, String text) {
-        return SendMessage.builder()
+
+    private TelegramBot telegramBot;
+
+    public void registerBot(TelegramBot telegramBot) {
+        this.telegramBot = telegramBot;
+    }
+
+    public void sendMessageWithText(Message message, String text) {
+        SendMessage sendMessage = SendMessage.builder()
                 .text(text)
                 .chatId(message.getChatId())
                 .build();
+        executeSendMessage(sendMessage);
     }
 
-    public SendMessage generateMessageWithBtn(Message message, String btnText, String callBackData, String text) {
+    public void sendMessageWithBtn(Message message, String btnText, String callBackData, String text) {
 
         var chatId = message.getChatId();
         var userName = message.getChat().getUserName();
@@ -39,10 +51,10 @@ public class MessageUtils {
                 .chatId(chatId)
                 .build();
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-        return sendMessage;
+        executeSendMessage(sendMessage);
     }
 
-    public SendMessage generateMessageWithBtnLink(Message message, String btnText, String url, String text) {
+    public void SendMessageWithBtnLink(Message message, String btnText, String url, String text) {
 
         var chatId = message.getChatId();
         var userName = message.getChat().getUserName();
@@ -62,6 +74,15 @@ public class MessageUtils {
                 .chatId(chatId)
                 .build();
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-        return sendMessage;
+        executeSendMessage(sendMessage);
+    }
+
+    private void executeSendMessage(SendMessage sendMessage) {
+        try {
+            telegramBot.execute(sendMessage);
+            log.info("+++ IN MessageUtils :: executeSendMessage :: COMPLETE");
+        } catch (TelegramApiException e) {
+            log.error("--- IN MessageUtils :: executeSendMessage :: FAIL - ", e);
+        }
     }
 }

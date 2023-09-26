@@ -8,7 +8,7 @@ start - Старт
 contact - Контакты
 help - Помощь
 
-?post - Создать пост
+*post - Создать пост (ADMIN)
 ?send - Отправить объявление
 */
 
@@ -22,7 +22,7 @@ help - Помощь
     public static final String COMMAND_CONTACT = "/contact";
     public static final String COMMAND_HELP = "/help";
 
-    // INLINE COMMANDS ----------------------------------
+// INLINE COMMANDS ----------------------------------
 //    /start@avto_Inspector_bot
 //    /contact@avto_Inspector_bot
 //    /help@avto_Inspector_bot

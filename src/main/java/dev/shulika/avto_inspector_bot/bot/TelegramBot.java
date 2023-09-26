@@ -1,8 +1,10 @@
 package dev.shulika.avto_inspector_bot.bot;
 
 import dev.shulika.avto_inspector_bot.bot.Service.UpdateDispatcher;
+import dev.shulika.avto_inspector_bot.bot.Utils.MessageUtils;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -15,23 +17,27 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final String botName;
-    private UpdateDispatcher updateDispatcher;
+    private final UpdateDispatcher updateDispatcher;
+    private final MessageUtils messageUtils;
 
+    @Autowired
     public TelegramBot(
             TelegramBotsApi telegramBotsApi,
             @Value("${bot.name}") String botName,
             @Value("${bot.token}") String botToken,
-            UpdateDispatcher updateDispatcher
+            UpdateDispatcher updateDispatcher,
+            MessageUtils messageUtils
     ) throws TelegramApiException {
         super(botToken);
         this.botName = botName;
         this.updateDispatcher = updateDispatcher;
+        this.messageUtils = messageUtils;
         telegramBotsApi.registerBot(this);
     }
 
     @PostConstruct
     public void init() {
-        updateDispatcher.registerBot(this);
+        messageUtils.registerBot(this);
     }
 
     @Override
@@ -41,7 +47,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        updateDispatcher.processUpdate(update);
+        updateDispatcher.distribute(update);
     }
 
 }

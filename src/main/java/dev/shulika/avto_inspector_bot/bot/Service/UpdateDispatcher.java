@@ -1,92 +1,56 @@
 package dev.shulika.avto_inspector_bot.bot.Service;
 
-import dev.shulika.avto_inspector_bot.bot.TelegramBot;
-import dev.shulika.avto_inspector_bot.bot.Utils.MessageUtils;
-import lombok.RequiredArgsConstructor;
+import dev.shulika.avto_inspector_bot.bot.Service.handler.CallbackQueryHandler;
+import dev.shulika.avto_inspector_bot.bot.Service.handler.CommandHandler;
+import dev.shulika.avto_inspector_bot.bot.Service.handler.MessageHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import static dev.shulika.avto_inspector_bot.bot.Utils.BotConst.*;
-
-@Component
-@RequiredArgsConstructor
+@Service
 @Slf4j
 public class UpdateDispatcher {
 
-    private TelegramBot telegramBot;
-    private final MessageUtils messageUtils;
+    private final MessageHandler messageHandler;
+    private final CommandHandler commandHandler;
+    private final CallbackQueryHandler callbackQueryHandler;
 
-    public void registerBot(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
+    @Autowired
+    public UpdateDispatcher(MessageHandler messageHandler,
+                            CommandHandler commandHandler,
+                            CallbackQueryHandler callbackQueryHandler) {
+        this.messageHandler = messageHandler;
+        this.commandHandler = commandHandler;
+        this.callbackQueryHandler = callbackQueryHandler;
     }
 
-    public void processUpdate(Update update) {
-        if (update == null) {
-            log.error("--- IN UpdateDispatcher :: processUpdate update :: Received update is null");
-            return;
-        } else if (update.hasMessage()) {
-            distributeMessagesByType(update);
+    public void distribute(Update update) {
+        if (update.hasMessage()) {
+            Message message = update.getMessage();
+            if (message.hasText()) {
+                if (message.getText().charAt(0) == '/') {
+                    log.info("+++ IN UpdateDispatcher :: distribute :: hasMessage :: hasText :: commandHandler - {}", message.getText());
+                    commandHandler.distribute(message);
+                } else {
+                    log.info("+++ IN UpdateDispatcher :: distribute :: hasMessage :: hasText :: messageHandler");
+                    messageHandler.distribute(message);
+                }
+            } else if (update.getMessage().hasPhoto()) {
+                log.info("+++ IN UpdateDispatcher :: distribute :: hasMessage :: hasPhoto :: ?");
+            } else if (update.getMessage().hasDocument()) {
+                log.info("+++ IN UpdateDispatcher :: distribute :: hasMessage :: hasDocument :: ?");
+            } else {
+                log.info("--- IN UpdateDispatcher :: distribute :: hasMessage :: UNSUPPORTED Message");
+            }
         } else if (update.hasCallbackQuery()) {
-            distributeCallbackQuery(update);
+            log.info("+++ IN UpdateDispatcher :: distribute :: hasCallbackQuery");
+            callbackQueryHandler.distribute(update.getCallbackQuery());
         } else {
-            log.error("--- IN UpdateDispatcher :: processUpdate update :: is not Message/Callback - {} ---", update);
+            log.error("--- IN UpdateDispatcher :: " +
+                    "distribute :: is not Message/Callback - {} ---", update);
         }
     }
 
-    private void distributeMessagesByType(Update update) {
-        if (update.getMessage().hasText()) {
-            processMessageText(update);
-        } else if (update.getMessage().hasPhoto()) {
-            processMessagePhoto(update);
-        } else {
-            log.error("--- IN UpdateDispatcher :: distributeMessagesByType :: Some text - UNSUPPORTED Message");
-//            executeSendMessage(messageUtils.generateMessageWithText(update.getMessage(), UNSUPPORTED_MSG));
-        }
-    }
-
-    private void processMessageText(Update update) {
-        var messageText = update.getMessage().getText();
-        log.info("+++ IN UpdateDispatcher :: processMessageText :: hasText - {}", messageText);
-        switch (messageText) {
-            case COMMAND_START -> executeSendMessage(messageUtils.generateMessageWithBtnLink(
-                    update.getMessage(), BTN_PAID, ADMIN_LINK, HELP_MSG
-            ));
-            case COMMAND_CONTACT ->
-                    executeSendMessage(messageUtils.generateMessageWithText(update.getMessage(), CONTACT_MSG));
-            case COMMAND_HELP ->
-                    executeSendMessage(messageUtils.generateMessageWithText(update.getMessage(), HELP_MSG));
-            case COMMAND_POST ->
-                    executeSendMessage(messageUtils.generateMessageWithText(update.getMessage(), HELP_MSG));
-        }
-    }
-
-    private void processMessagePhoto(Update update) {
-        log.info("+++ IN UpdateDispatcher :: processMessagePhoto :: hasPhoto");
-    }
-
-    private void distributeCallbackQuery(Update update) {
-        log.info("+++ IN UpdateDispatcher :: processUpdate :: hasCallbackQuery");
-        var query = update.getCallbackQuery();
-        var queryData = query.getData();
-        var message = query.getMessage();
-        String[] param = queryData.split(":");
-        String action = param[0];
-        String value = param[1];
-
-        switch (action) {
-            case BTN_PAID_CALLBACK -> System.out.println("BTN_PAID_CALLBACK");
-        }
-    }
-
-    private void executeSendMessage(SendMessage sendMessage) {
-        try {
-            telegramBot.execute(sendMessage);
-            log.info("+++ IN UpdateDispatcher :: ExecuteSendMessage :: COMPLETE");
-        } catch (TelegramApiException e) {
-            log.error("--- IN UpdateDispatcher :: ExecuteSendMessage :: FAIL - ", e);
-        }
-    }
 }
