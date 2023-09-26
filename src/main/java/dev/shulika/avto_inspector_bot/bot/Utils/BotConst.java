@@ -1,4 +1,4 @@
-package dev.shulika.avto_inspector_bot.bot;
+package dev.shulika.avto_inspector_bot.bot.Utils;
 
 public class BotConst {
 

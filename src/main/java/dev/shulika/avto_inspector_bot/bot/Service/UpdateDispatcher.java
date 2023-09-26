@@ -1,18 +1,20 @@
-package dev.shulika.avto_inspector_bot.bot;
+package dev.shulika.avto_inspector_bot.bot.Service;
 
+import dev.shulika.avto_inspector_bot.bot.TelegramBot;
+import dev.shulika.avto_inspector_bot.bot.Utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import static dev.shulika.avto_inspector_bot.bot.BotConst.*;
+import static dev.shulika.avto_inspector_bot.bot.Utils.BotConst.*;
 
-@Controller
+@Component
 @RequiredArgsConstructor
 @Slf4j
-public class UpdateController {
+public class UpdateDispatcher {
 
     private TelegramBot telegramBot;
     private final MessageUtils messageUtils;
@@ -23,14 +25,14 @@ public class UpdateController {
 
     public void processUpdate(Update update) {
         if (update == null) {
-            log.error("--- IN UpdateController :: processUpdate update :: Received update is null");
+            log.error("--- IN UpdateDispatcher :: processUpdate update :: Received update is null");
             return;
         } else if (update.hasMessage()) {
             distributeMessagesByType(update);
         } else if (update.hasCallbackQuery()) {
             distributeCallbackQuery(update);
         } else {
-            log.error("--- IN UpdateController :: processUpdate update :: is not Message/Callback - {} ---", update);
+            log.error("--- IN UpdateDispatcher :: processUpdate update :: is not Message/Callback - {} ---", update);
         }
     }
 
@@ -40,14 +42,14 @@ public class UpdateController {
         } else if (update.getMessage().hasPhoto()) {
             processMessagePhoto(update);
         } else {
-            log.error("--- IN UpdateController :: distributeMessagesByType :: Some text - UNSUPPORTED Message");
+            log.error("--- IN UpdateDispatcher :: distributeMessagesByType :: Some text - UNSUPPORTED Message");
 //            executeSendMessage(messageUtils.generateMessageWithText(update.getMessage(), UNSUPPORTED_MSG));
         }
     }
 
     private void processMessageText(Update update) {
         var messageText = update.getMessage().getText();
-        log.info("+++ IN UpdateController :: processMessageText :: hasText - {}", messageText);
+        log.info("+++ IN UpdateDispatcher :: processMessageText :: hasText - {}", messageText);
         switch (messageText) {
             case COMMAND_START -> executeSendMessage(messageUtils.generateMessageWithBtnLink(
                     update.getMessage(), BTN_PAID, ADMIN_LINK, HELP_MSG
@@ -62,11 +64,11 @@ public class UpdateController {
     }
 
     private void processMessagePhoto(Update update) {
-        log.info("+++ IN UpdateController :: processMessagePhoto :: hasPhoto");
+        log.info("+++ IN UpdateDispatcher :: processMessagePhoto :: hasPhoto");
     }
 
     private void distributeCallbackQuery(Update update) {
-        log.info("+++ IN UpdateController :: processUpdate :: hasCallbackQuery");
+        log.info("+++ IN UpdateDispatcher :: processUpdate :: hasCallbackQuery");
         var query = update.getCallbackQuery();
         var queryData = query.getData();
         var message = query.getMessage();
@@ -82,9 +84,9 @@ public class UpdateController {
     private void executeSendMessage(SendMessage sendMessage) {
         try {
             telegramBot.execute(sendMessage);
-            log.info("+++ IN UpdateController :: ExecuteSendMessage :: COMPLETE");
+            log.info("+++ IN UpdateDispatcher :: ExecuteSendMessage :: COMPLETE");
         } catch (TelegramApiException e) {
-            log.error("--- IN UpdateController :: ExecuteSendMessage :: FAIL - ", e);
+            log.error("--- IN UpdateDispatcher :: ExecuteSendMessage :: FAIL - ", e);
         }
     }
 }
