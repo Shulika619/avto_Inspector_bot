@@ -1,15 +1,15 @@
-package dev.shulika.avto_inspector_bot.bot.Utils;
+package dev.shulika.avto_inspector_bot.bot.utils;
 
 public class BotConst {
 
 /*
  :::::  Telegram List Commands  :::::
 start - Старт
+send - Отправить объявление
 contact - Контакты
 help - Помощь
 
-*post - Создать пост (ADMIN)
-?send - Отправить объявление
+?post - Создать пост (ADMIN)
 */
 
     // ADMIN ---------------------------------------
@@ -19,6 +19,7 @@ help - Помощь
 
     // COMMANDS ---------------------------------------
     public static final String COMMAND_START = "/start";
+    public static final String COMMAND_SEND = "/send";
     public static final String COMMAND_CONTACT = "/contact";
     public static final String COMMAND_HELP = "/help";
 

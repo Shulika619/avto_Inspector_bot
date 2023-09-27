@@ -1,8 +1,8 @@
-package dev.shulika.avto_inspector_bot.bot.Service;
+package dev.shulika.avto_inspector_bot.bot.service;
 
-import dev.shulika.avto_inspector_bot.bot.Service.handler.CallbackQueryHandler;
-import dev.shulika.avto_inspector_bot.bot.Service.handler.CommandHandler;
-import dev.shulika.avto_inspector_bot.bot.Service.handler.MessageHandler;
+import dev.shulika.avto_inspector_bot.bot.service.handler.CallbackQueryHandler;
+import dev.shulika.avto_inspector_bot.bot.service.handler.CommandHandler;
+import dev.shulika.avto_inspector_bot.bot.service.handler.MessageHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

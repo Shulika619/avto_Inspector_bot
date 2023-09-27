@@ -1,11 +1,11 @@
-package dev.shulika.avto_inspector_bot.bot.Service.handler;
+package dev.shulika.avto_inspector_bot.bot.service.handler;
 
-import dev.shulika.avto_inspector_bot.bot.Utils.MessageUtils;
+import dev.shulika.avto_inspector_bot.bot.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import static dev.shulika.avto_inspector_bot.bot.Utils.BotConst.*;
+import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.*;
 
 @Service
 public class CommandHandler {
@@ -22,9 +22,9 @@ public class CommandHandler {
         switch (command) {
             case COMMAND_START -> messageUtils.SendMessageWithBtnLink(
                     message, BTN_PAID, ADMIN_LINK, HELP_MSG);
+            case COMMAND_SEND -> messageUtils.sendMessageWithText(message, CONTACT_MSG);
             case COMMAND_CONTACT -> messageUtils.sendMessageWithText(message, CONTACT_MSG);
             case COMMAND_HELP -> messageUtils.sendMessageWithText(message, HELP_MSG);
-            case COMMAND_POST -> messageUtils.sendMessageWithText(message, HELP_MSG);
         }
     }
 

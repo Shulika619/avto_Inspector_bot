@@ -1,9 +1,9 @@
-package dev.shulika.avto_inspector_bot.bot.Service.handler;
+package dev.shulika.avto_inspector_bot.bot.service.handler;
 
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static dev.shulika.avto_inspector_bot.bot.Utils.BotConst.BTN_PAID_CALLBACK;
+import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.BTN_PAID_CALLBACK;
 
 @Service
 public class CallbackQueryHandler {

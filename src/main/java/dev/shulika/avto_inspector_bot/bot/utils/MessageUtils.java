@@ -1,4 +1,4 @@
-package dev.shulika.avto_inspector_bot.bot.Utils;
+package dev.shulika.avto_inspector_bot.bot.utils;
 
 import dev.shulika.avto_inspector_bot.bot.TelegramBot;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,7 @@
 package dev.shulika.avto_inspector_bot.bot;
 
-import dev.shulika.avto_inspector_bot.bot.Service.UpdateDispatcher;
-import dev.shulika.avto_inspector_bot.bot.Utils.MessageUtils;
+import dev.shulika.avto_inspector_bot.bot.service.UpdateDispatcher;
+import dev.shulika.avto_inspector_bot.bot.utils.MessageUtils;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

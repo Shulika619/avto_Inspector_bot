@@ -1,4 +1,4 @@
-package dev.shulika.avto_inspector_bot.bot.Service.handler;
+package dev.shulika.avto_inspector_bot.bot.service.handler;
 
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
