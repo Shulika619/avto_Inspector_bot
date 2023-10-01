@@ -18,7 +18,6 @@ contact - Контакты
     public static final String COMMAND_START = "/start";
     public static final String COMMAND_CONTACT = "/contact";
 
-
     // Messages ---------------------------------------
     public static final String UNSUPPORTED_COMMAND = "Такой команды не существует!";
     public static final String CONTACT_MSG = " ✏️ Контакты Администратора: " + ADMIN_LINK;
@@ -60,9 +59,20 @@ contact - Контакты
             ⚠️❗️ Обязательно отправьте скрин/чек оплаты ❗️⚠️
             """;
 
-    // Buttons and CallBackData---------------------------------
+    // Questions Messages ---------------------------------------
+    public static final String QUESTION_1 = """
+            ➡️ Марка/модель
+            Например: TOYOTA / RAV4
+                        """;
+
+    public static final String QUESTION_2 = "₽ Цена";
+
+
+    // COMMON Buttons and CallBackData ---------------------------------
     public static final String BTN_START_ADS = "➕ Разместить обьявление";
     public static final String BTN_START_ADS_CALLBACK = "START_ADS";
+    public static final String BTN_BACK = "⬅ Назад";
+    public static final String BTN_BACK_CALLBACK = "BACK";
     public static final String BTN_CONTACT = "✏️ Контакты";
 
 //    public static final String BTN_PAID = "✅ Уже оплатил и готов разместить обьявление ✅";

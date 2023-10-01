@@ -25,16 +25,14 @@ public class MessageUtils {
         this.telegramBot = telegramBot;
     }
 
-    public void sendStartMessage(Message message){
-        var chatId = message.getChatId();
-        var userName = message.getChat().getUserName();
+    public void sendStartMessage(Long chatId){
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(Collections.singletonList(
                 InlineKeyboardButton.builder()
                         .text(BTN_START_ADS)
-                        .callbackData(BTN_START_ADS_CALLBACK + ":" + userName)
+                        .callbackData(BTN_START_ADS_CALLBACK + ":" + chatId)
                         .build()
         ));
         keyboard.add(Collections.singletonList(
@@ -53,11 +51,30 @@ public class MessageUtils {
         executeSendMessage(sendMessage);
     }
 
-    public void sendMessageWithText(Message message, String text) {
+    public void sendMessageWithText(Long chatId, String text) {
         SendMessage sendMessage = SendMessage.builder()
                 .text(text)
-                .chatId(message.getChatId())
+                .chatId(chatId)
                 .build();
+        executeSendMessage(sendMessage);
+    }
+
+    public void sendMessageQuestion(Long chatId, String text) {
+        SendMessage sendMessage = SendMessage.builder()
+                .text(text)
+                .chatId(chatId)
+                .build();
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        keyboard.add(Collections.singletonList(
+                InlineKeyboardButton.builder()
+                        .text(BTN_BACK)
+                        .callbackData(BTN_BACK_CALLBACK + ":" + chatId)
+                        .build()
+        ));
+        inlineKeyboardMarkup.setKeyboard(keyboard);
+        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         executeSendMessage(sendMessage);
     }
 

@@ -17,10 +17,11 @@ public class CommandHandler {
 
     public void distribute(Message message) {
         String command = message.getText();
+        Long chatId = message.getChatId();
         switch (command) {
-            case COMMAND_START -> messageUtils.sendStartMessage(message);
-            case COMMAND_CONTACT -> messageUtils.sendMessageWithText(message, CONTACT_MSG);
-            default -> messageUtils.sendMessageWithText(message, UNSUPPORTED_COMMAND);
+            case COMMAND_START -> messageUtils.sendStartMessage(chatId);
+            case COMMAND_CONTACT -> messageUtils.sendMessageWithText(chatId, CONTACT_MSG);
+            default -> messageUtils.sendMessageWithText(chatId, UNSUPPORTED_COMMAND);
         }
     }
 
