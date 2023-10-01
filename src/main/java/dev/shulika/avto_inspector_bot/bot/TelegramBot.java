@@ -4,13 +4,14 @@ import dev.shulika.avto_inspector_bot.bot.service.UpdateDispatcher;
 import dev.shulika.avto_inspector_bot.bot.utils.MessageUtils;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.List;
 
 @Component
 @Slf4j
@@ -20,7 +21,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final UpdateDispatcher updateDispatcher;
     private final MessageUtils messageUtils;
 
-    @Autowired
     public TelegramBot(
             TelegramBotsApi telegramBotsApi,
             @Value("${bot.name}") String botName,

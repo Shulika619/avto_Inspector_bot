@@ -4,7 +4,6 @@ import dev.shulika.avto_inspector_bot.bot.service.handler.CallbackQueryHandler;
 import dev.shulika.avto_inspector_bot.bot.service.handler.CommandHandler;
 import dev.shulika.avto_inspector_bot.bot.service.handler.MessageHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -17,7 +16,6 @@ public class UpdateDispatcher {
     private final CommandHandler commandHandler;
     private final CallbackQueryHandler callbackQueryHandler;
 
-    @Autowired
     public UpdateDispatcher(MessageHandler messageHandler,
                             CommandHandler commandHandler,
                             CallbackQueryHandler callbackQueryHandler) {
@@ -38,7 +36,7 @@ public class UpdateDispatcher {
                     messageHandler.distribute(message);
                 }
             } else if (update.getMessage().hasPhoto()) {
-                log.info("+++ IN UpdateDispatcher :: distribute :: hasMessage :: hasPhoto :: ?");
+                log.info("+++ IN UpdateDispatcher :: distribute :: hasMessage :: hasPhoto :: ? :: Caption - {}",update.getMessage().getCaption());
             } else if (update.getMessage().hasDocument()) {
                 log.info("+++ IN UpdateDispatcher :: distribute :: hasMessage :: hasDocument :: ?");
             } else {

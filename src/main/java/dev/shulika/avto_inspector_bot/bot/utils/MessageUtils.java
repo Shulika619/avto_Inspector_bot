@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.*;
+
 @Component
 @Slf4j
 public class MessageUtils {
@@ -23,6 +25,34 @@ public class MessageUtils {
         this.telegramBot = telegramBot;
     }
 
+    public void sendStartMessage(Message message){
+        var chatId = message.getChatId();
+        var userName = message.getChat().getUserName();
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        keyboard.add(Collections.singletonList(
+                InlineKeyboardButton.builder()
+                        .text(BTN_START_ADS)
+                        .callbackData(BTN_START_ADS_CALLBACK + ":" + userName)
+                        .build()
+        ));
+        keyboard.add(Collections.singletonList(
+                InlineKeyboardButton.builder()
+                        .text(BTN_CONTACT)
+                        .url(ADMIN_LINK)
+                        .build()
+        ));
+        inlineKeyboardMarkup.setKeyboard(keyboard);
+
+        var sendMessage = SendMessage.builder()
+                .text(START_MSG)
+                .chatId(chatId)
+                .build();
+        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+        executeSendMessage(sendMessage);
+    }
+
     public void sendMessageWithText(Message message, String text) {
         SendMessage sendMessage = SendMessage.builder()
                 .text(text)
@@ -31,51 +61,51 @@ public class MessageUtils {
         executeSendMessage(sendMessage);
     }
 
-    public void sendMessageWithBtn(Message message, String btnText, String callBackData, String text) {
-
-        var chatId = message.getChatId();
-        var userName = message.getChat().getUserName();
-
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        keyboard.add(Collections.singletonList(
-                InlineKeyboardButton.builder()
-                        .text(btnText)
-                        .callbackData(callBackData + ":" + userName)
-                        .build()
-        ));
-        inlineKeyboardMarkup.setKeyboard(keyboard);
-
-        var sendMessage = SendMessage.builder()
-                .text(text)
-                .chatId(chatId)
-                .build();
-        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-        executeSendMessage(sendMessage);
-    }
-
-    public void SendMessageWithBtnLink(Message message, String btnText, String url, String text) {
-
-        var chatId = message.getChatId();
-        var userName = message.getChat().getUserName();
-
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        keyboard.add(Collections.singletonList(
-                InlineKeyboardButton.builder()
-                        .text(btnText)
-                        .url(url)
-                        .build()
-        ));
-        inlineKeyboardMarkup.setKeyboard(keyboard);
-
-        var sendMessage = SendMessage.builder()
-                .text(text)
-                .chatId(chatId)
-                .build();
-        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-        executeSendMessage(sendMessage);
-    }
+//    public void sendMessageWithBtn(Message message, String btnText, String callBackData, String text) {
+//
+//        var chatId = message.getChatId();
+//        var userName = message.getChat().getUserName();
+//
+//        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+//        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+//        keyboard.add(Collections.singletonList(
+//                InlineKeyboardButton.builder()
+//                        .text(btnText)
+//                        .callbackData(callBackData + ":" + userName)
+//                        .build()
+//        ));
+//        inlineKeyboardMarkup.setKeyboard(keyboard);
+//
+//        var sendMessage = SendMessage.builder()
+//                .text(text)
+//                .chatId(chatId)
+//                .build();
+//        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+//        executeSendMessage(sendMessage);
+//    }
+//
+//    public void SendMessageWithBtnLink(Message message, String btnText, String url, String text) {
+//
+//        var chatId = message.getChatId();
+//        var userName = message.getChat().getUserName();
+//
+//        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+//        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+//        keyboard.add(Collections.singletonList(
+//                InlineKeyboardButton.builder()
+//                        .text(btnText)
+//                        .url(url)
+//                        .build()
+//        ));
+//        inlineKeyboardMarkup.setKeyboard(keyboard);
+//
+//        var sendMessage = SendMessage.builder()
+//                .text(text)
+//                .chatId(chatId)
+//                .build();
+//        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+//        executeSendMessage(sendMessage);
+//    }
 
     private void executeSendMessage(SendMessage sendMessage) {
         try {
@@ -85,4 +115,5 @@ public class MessageUtils {
             log.error("--- IN MessageUtils :: executeSendMessage :: FAIL - ", e);
         }
     }
+
 }

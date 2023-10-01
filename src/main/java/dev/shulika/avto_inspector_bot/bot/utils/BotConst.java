@@ -2,36 +2,27 @@ package dev.shulika.avto_inspector_bot.bot.utils;
 
 public class BotConst {
 
-/*
- :::::  Telegram List Commands  :::::
-start - Старт
-send - Отправить объявление
-contact - Контакты
-help - Помощь
 
-?post - Создать пост (ADMIN)
+/* :::::  Telegram List Commands  :::::
+start - Разместить объявление
+contact - Контакты
+
+/start@avto_Inspector_bot
+/contact@avto_Inspector_bot
 */
 
     // ADMIN ---------------------------------------
     public static final String ADMIN_LINK = "https://t.me/LPR_Inspectors";
-    public static final String COMMAND_POST = "/post";
-
 
     // COMMANDS ---------------------------------------
     public static final String COMMAND_START = "/start";
-    public static final String COMMAND_SEND = "/send";
     public static final String COMMAND_CONTACT = "/contact";
-    public static final String COMMAND_HELP = "/help";
 
-// INLINE COMMANDS ----------------------------------
-//    /start@avto_Inspector_bot
-//    /contact@avto_Inspector_bot
-//    /help@avto_Inspector_bot
 
     // Messages ---------------------------------------
-    public static final String UNSUPPORTED_MSG = "Неподдерживаемый тип сообщения";
-    public static final String CONTACT_MSG = " ✏️ Контакты Администратора: https://t.me/LPR_Inspectors";
-    public static final String HELP_MSG = """
+    public static final String UNSUPPORTED_COMMAND = "Такой команды не существует!";
+    public static final String CONTACT_MSG = " ✏️ Контакты Администратора: " + ADMIN_LINK;
+    public static final String START_MSG = """
             Доброго времени суток 💪
             🪙 СТОИМОСТЬ ПУБЛИКАЦИИ АВТО 300₽
             ✔️ Самая быстрая публикация;
@@ -70,7 +61,11 @@ help - Помощь
             """;
 
     // Buttons and CallBackData---------------------------------
-    public static final String BTN_PAID = "✅ Уже оплатил и готов разместить обьявление ✅";
-    public static final String BTN_PAID_CALLBACK = "ACCEPT_PAID";
+    public static final String BTN_START_ADS = "➕ Разместить обьявление";
+    public static final String BTN_START_ADS_CALLBACK = "START_ADS";
+    public static final String BTN_CONTACT = "✏️ Контакты";
+
+//    public static final String BTN_PAID = "✅ Уже оплатил и готов разместить обьявление ✅";
+//    public static final String BTN_PAID_CALLBACK = "ACCEPT_PAID";
 
 }
