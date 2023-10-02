@@ -24,7 +24,7 @@ public class CallbackQueryHandler {
         String value = param[1];
 
         switch (action) {
-            case BTN_START_ADS_CALLBACK -> messageHandler.distribute(message);
+            case BTN_START_ADS_CALLBACK -> messageHandler.start(message);
             case BTN_BACK_CALLBACK -> messageHandler.back(message);
 //            case BTN_PAID_CALLBACK -> System.out.println("BTN_PAID_CALLBACK");
         }

@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.*;
+
 @Getter
 @Setter
 @Builder
@@ -27,22 +29,19 @@ public class UserAdData {
 
     @Override
     public String toString() {
-        return "UserAdData{" +
-                "state=" + state +
-                ", userName='" + userName + '\'' +
-                ", makeModel='" + makeModel + '\'' +
-                ", price='" + price + '\'' +
-                ", city='" + city + '\'' +
-                ", year='" + year + '\'' +
-                ", km='" + km + '\'' +
-                ", cubicCapacity='" + cubicCapacity + '\'' +
-                ", fuelType='" + fuelType + '\'' +
-                ", transmission='" + transmission + '\'' +
-                ", owner='" + owner + '\'' +
-                ", description='" + description + '\'' +
-                ", phone='" + phone + '\'' +
-                ", messengers='" + messengers + '\'' +
-                ", photo='" + photo + '\'' +
-                '}';
+        StringBuilder stringBuilder = new StringBuilder()
+                .append(QUESTION_1 + makeModel + "\n")
+                .append(QUESTION_2 + price + "\n")
+                .append(QUESTION_3 + city + "\n")
+                .append(QUESTION_4 + year + "\n")
+                .append(QUESTION_5 + km + "\n")
+                .append(QUESTION_6 + cubicCapacity + "\n")
+                .append(QUESTION_7 + fuelType + "\n")
+                .append(QUESTION_8 + transmission + "\n")
+                .append(QUESTION_9 + owner + "\n")
+                .append(QUESTION_10 + description + "\n")
+                .append(QUESTION_11 + phone + "\n")
+                .append(QUESTION_12 + messengers + "\n");
+        return stringBuilder.toString();
     }
 }

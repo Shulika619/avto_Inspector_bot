@@ -60,14 +60,19 @@ contact - Контакты
             """;
 
     // Questions Messages ---------------------------------------
-    public static final String QUESTION_1 = """
-            ➡️ Марка/модель
-            Например: TOYOTA / RAV4
-                        """;
-    public static final String QUESTION_2 = "₽ Цена";
-    public static final String QUESTION_3 = "Город";
-    public static final String QUESTION_4 = "Год выпуска";
-    public static final String QUESTION_5 = "Пробег";
+    public static final String QUESTION_1 = "Марка/модель: ";
+    public static final String QUESTION_2 = "Цена: ";
+    public static final String QUESTION_3 = "Город: ";
+    public static final String QUESTION_4 = "Год выпуска: ";
+    public static final String QUESTION_5 = "Пробег: ";
+    public static final String QUESTION_6 = "Объём двигателя: ";
+    public static final String QUESTION_7 = "Топливо: ";
+    public static final String QUESTION_8 = "КПП: ";
+    public static final String QUESTION_9 = "Собственник: ";
+    public static final String QUESTION_10 = "Описание от продавца: ";
+    public static final String QUESTION_11 = "Номер тел: ";
+    public static final String QUESTION_12 = "WhatsApp, Viber, Telegram: ";
+    public static final String QUESTION_13 = "Фото до 10 шт: ";
 
     // COMMON Buttons and CallBackData ---------------------------------
     public static final String BTN_START_ADS = "➕ Разместить обьявление";
