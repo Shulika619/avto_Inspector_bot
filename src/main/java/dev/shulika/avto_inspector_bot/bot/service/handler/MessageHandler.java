@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.Map;
-
-import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.QUESTION_1;
-import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.QUESTION_2;
+import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.*;
 
 @Service
 @Slf4j
@@ -25,50 +22,60 @@ public class MessageHandler {
     }
 
     public void distribute(Message message) {
-        Long chatId = message.getChatId();
-        Map<Long, UserAdData> dataMap = dataCache.getDataMap();
-        UserAdData userAdData = dataMap.get(chatId);
 
-        if (userAdData == null) {
-            log.info("--- MessageHandler :: distribute :: userAdData null - set state1 now");
-            dataMap.put(chatId, UserAdData.builder()
-                    .state(1)
-                    .userName(message.getChat().getUserName())
-                    .build());
+        Long chatId = message.getChatId();
+        Integer state = dataCache.checkState(chatId);
+        System.out.println("===== State = " + state);   // TODO: remove
+
+        if (state == null) {
+            log.info("--- MessageHandler :: distribute :: state null - create and set state1 now");
+            dataCache.createUserAdData(chatId, message.getChat().getUserName());
             messageUtils.sendMessageQuestion(chatId, QUESTION_1);
             return;
         }
-        Integer state = userAdData.getState();
-        String text = message.getText();
-        switch (state) {
-            case 1 -> {
-                // TODO: save text
-                // TODO: save newState
-                messageUtils.sendMessageQuestion(chatId, QUESTION_1);
-            }
-            case 2 -> {
 
+        String text = message.getText();
+        UserAdData userAdData = dataCache.getDataMap().get(chatId);
+
+        switch (state) {
+            case 0 -> {
+                dataCache.remove(chatId);
+                messageUtils.sendStartMessage(chatId);
+            }
+            case 1 -> {
+                log.info("+++ MessageHandler :: distribute:: case1 now");
+                userAdData.setMakeModel(text);
+                dataCache.incrementState(chatId, state);
                 messageUtils.sendMessageQuestion(chatId, QUESTION_2);
             }
+            case 2 -> {
+                log.info("+++ MessageHandler :: distribute:: case2 now");
+                userAdData.setPrice(text);
+                dataCache.incrementState(chatId, state);
+                messageUtils.sendMessageQuestion(chatId, QUESTION_3);
+            }
+            case 3 -> {
+                log.info("+++ MessageHandler :: distribute:: case3 now");
+                userAdData.setCity(text);
+                dataCache.incrementState(chatId, state);
+                messageUtils.sendMessageQuestion(chatId, QUESTION_4);
+            }
+            case 4 -> {
+                log.info("+++ MessageHandler :: distribute:: case4 now");
+                userAdData.setYear(text);
+                dataCache.incrementState(chatId, state);
+                messageUtils.sendMessageQuestion(chatId, QUESTION_5);
+            }
+            default -> log.info("--- MessageHandler :: distribute:: default = " + userAdData);
         }
-    }
 
+    }
 
     public void back(Message message) {
         Long chatId = message.getChatId();
-        Map<Long, UserAdData> dataMap = dataCache.getDataMap();
-        UserAdData userAdData = dataMap.get(chatId);
-        Integer state = userAdData.getState();
-
-        if (state.equals(1)) {
-            log.info("<-- MessageHandler :: back :: userAdData.state = {} - set null now", state);
-            dataMap.put(chatId, null);
-            messageUtils.sendStartMessage(chatId);
-        } else {
-            log.info("<-- MessageHandler :: back :: userAdData.state = {} - set {} now", state, state - 1);
-            dataMap.put(chatId, userAdData.changeState(state - 1));
-            distribute(message);
-        }
+        Integer state = dataCache.checkState(chatId);
+        dataCache.decrementState(chatId, state);
+        distribute(message);
     }
 
 }

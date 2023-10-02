@@ -64,9 +64,10 @@ contact - Контакты
             ➡️ Марка/модель
             Например: TOYOTA / RAV4
                         """;
-
     public static final String QUESTION_2 = "₽ Цена";
-
+    public static final String QUESTION_3 = "Город";
+    public static final String QUESTION_4 = "Год выпуска";
+    public static final String QUESTION_5 = "Пробег";
 
     // COMMON Buttons and CallBackData ---------------------------------
     public static final String BTN_START_ADS = "➕ Разместить обьявление";

@@ -25,11 +25,6 @@ public class UserAdData {
     private String messengers;
     private String photo;
 
-    public UserAdData changeState(Integer state){
-        this.state=state;
-        return this;
-    }
-
     @Override
     public String toString() {
         return "UserAdData{" +
