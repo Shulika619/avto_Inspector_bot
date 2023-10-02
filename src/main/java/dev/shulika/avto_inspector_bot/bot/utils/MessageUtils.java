@@ -59,7 +59,7 @@ public class MessageUtils {
         executeSendMessage(sendMessage);
     }
 
-    public void sendMessageQuestion(Long chatId, String text) {
+    public void sendMessageQuestion(Long chatId, String text, Integer currentState) {
         SendMessage sendMessage = SendMessage.builder()
                 .text(text)
                 .chatId(chatId)
@@ -70,7 +70,7 @@ public class MessageUtils {
         keyboard.add(Collections.singletonList(
                 InlineKeyboardButton.builder()
                         .text(BTN_BACK)
-                        .callbackData(BTN_BACK_CALLBACK + ":" + chatId)
+                        .callbackData(BTN_BACK_CALLBACK + ":" + currentState)
                         .build()
         ));
         inlineKeyboardMarkup.setKeyboard(keyboard);

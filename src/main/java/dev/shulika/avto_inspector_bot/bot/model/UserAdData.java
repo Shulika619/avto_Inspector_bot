@@ -30,18 +30,18 @@ public class UserAdData {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder()
-                .append(QUESTION_1 + makeModel + "\n")
-                .append(QUESTION_2 + price + "\n")
-                .append(QUESTION_3 + city + "\n")
-                .append(QUESTION_4 + year + "\n")
-                .append(QUESTION_5 + km + "\n")
-                .append(QUESTION_6 + cubicCapacity + "\n")
-                .append(QUESTION_7 + fuelType + "\n")
-                .append(QUESTION_8 + transmission + "\n")
-                .append(QUESTION_9 + owner + "\n")
-                .append(QUESTION_10 + description + "\n")
-                .append(QUESTION_11 + phone + "\n")
-                .append(QUESTION_12 + messengers + "\n");
+                .append("Марка/модель: " + makeModel + "\n")
+                .append("Цена: "+ price + "\n")
+                .append("Город: " + city + "\n")
+                .append("Год выпуска: " + year + "\n")
+                .append("Пробег: " + km + "\n")
+                .append("Объём двигателя: " + cubicCapacity + "\n")
+                .append("Топливо: " + fuelType + "\n")
+                .append("КПП: " + transmission + "\n")
+                .append("Собственник: " + owner + "\n")
+                .append("Описание от продавца: " + description + "\n")
+                .append("Номер тел: " + phone + "\n")
+                .append("WhatsApp, Viber, Telegram: " + messengers + "\n");
         return stringBuilder.toString();
     }
 }

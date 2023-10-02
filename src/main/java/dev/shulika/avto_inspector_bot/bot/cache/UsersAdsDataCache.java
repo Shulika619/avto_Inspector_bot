@@ -34,10 +34,10 @@ public class UsersAdsDataCache {
     }
 
     public void decrementState(Long chatId, Integer state){
-        dataMap.get(chatId).setState(state-2);
+        dataMap.get(chatId).setState(state-1);
     }
 
-    public void remove(Long chatId){
+    public void removeUserAdData(Long chatId){
         dataMap.remove(chatId);
     }
 }
