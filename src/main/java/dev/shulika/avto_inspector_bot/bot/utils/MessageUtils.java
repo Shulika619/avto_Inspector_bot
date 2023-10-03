@@ -105,15 +105,13 @@ public class MessageUtils {
         List<InputMedia> medias = filesId.stream()
                 .map(fileId -> InputMediaPhoto.builder()
                        .media(fileId)
-                       .caption(caption)
                        .build())
                 .collect(Collectors.toList());
-
+        medias.get(0).setCaption(caption);
         SendMediaGroup sendMediaGroup = SendMediaGroup.builder()
                 .chatId(chatId)
                 .medias(medias)
                 .build();
-
         try {
             telegramBot.execute(sendMediaGroup);
             log.info("+++ IN MessageUtils :: execute sendPhotoMediaGroup :: COMPLETE");
