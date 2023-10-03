@@ -13,15 +13,21 @@ import java.util.List;
 @Slf4j
 public class PhotoHandler {
 
-    UsersAdsDataCache dataCache;
+    private final UsersAdsDataCache dataCache;
 
     public PhotoHandler(UsersAdsDataCache dataCache) {
         this.dataCache = dataCache;
     }
 
     public void distribute(Message message) {
+
         Long chatId = message.getChatId();
-        String text = message.getCaption();
+        Integer state = dataCache.checkState(chatId);
+        if (state == null) {
+            log.info("--- PhotoHandler :: distribute:: state null");
+            return;
+        }
+
         String mediaGroupId = message.getMediaGroupId();
         List<PhotoSize> listPhotoSize = message.getPhoto();
         PhotoSize maxSizePhoto = listPhotoSize.stream()
@@ -30,7 +36,7 @@ public class PhotoHandler {
         String fileId = maxSizePhoto.getFileId();
 
         if(mediaGroupId.isEmpty()){
-            log.info("--- IN PhotoHandler :: distribute :: MediaGroupId null");
+            log.info("--- IN PhotoHandler :: distribute :: MediaGroupId null - single photo");
             // TODO: Process 1 photo
         } else {
             log.info("+++ IN PhotoHandler :: distribute :: MediaGroupId - {}", mediaGroupId);

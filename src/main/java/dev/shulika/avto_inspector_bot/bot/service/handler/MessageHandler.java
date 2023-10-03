@@ -46,6 +46,12 @@ public class MessageHandler {
 
         Long chatId = message.getChatId();
         Integer state = dataCache.checkState(chatId);
+
+        if (state == null) {
+            log.info("--- MessageHandler :: distribute:: state null");
+            return;
+        }
+
         String text = message.getText();
         UserAdData userAdData = dataCache.getDataMap().get(chatId);
         log.info("+++ MessageHandler :: distribute:: state-{} now", state);
@@ -108,11 +114,18 @@ public class MessageHandler {
             }
             default -> {
                 log.info("--- MessageHandler :: distribute:: default");
-                messageUtils.sendMessageWithText(chatId, userAdData.toString());
-                System.out.println("==== FOTOS - " + userAdData.getPhoto());
-                dataCache.removeUserAdData(chatId);
+//                messageUtils.sendMessageWithText(chatId, userAdData.toString());
+//                dataCache.removeUserAdData(chatId);
             }
         }
+    }
+
+    public void finish(Long chatId){
+        log.info("+++ MessageHandler :: finish :: send msg and delete cache");
+        UserAdData userAdData = dataCache.getDataMap().get(chatId);
+        messageUtils.sendMessageWithText(chatId, userAdData.toString());
+        System.out.println("==== PhotoID = " + userAdData.getPhoto());
+        dataCache.removeUserAdData(chatId);
     }
 
 }

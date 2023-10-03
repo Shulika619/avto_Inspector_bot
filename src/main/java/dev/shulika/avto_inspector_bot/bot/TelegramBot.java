@@ -1,5 +1,6 @@
 package dev.shulika.avto_inspector_bot.bot;
 
+import dev.shulika.avto_inspector_bot.bot.service.MultipleUpdatesDispatcher;
 import dev.shulika.avto_inspector_bot.bot.service.UpdateDispatcher;
 import dev.shulika.avto_inspector_bot.bot.utils.MessageUtils;
 import jakarta.annotation.PostConstruct;
@@ -19,6 +20,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private final String botName;
     private final UpdateDispatcher updateDispatcher;
+    private final MultipleUpdatesDispatcher multiUpdatesDispatcher;
     private final MessageUtils messageUtils;
 
     public TelegramBot(
@@ -26,11 +28,13 @@ public class TelegramBot extends TelegramLongPollingBot {
             @Value("${bot.name}") String botName,
             @Value("${bot.token}") String botToken,
             UpdateDispatcher updateDispatcher,
+            MultipleUpdatesDispatcher multiUpdatesDispatcher,
             MessageUtils messageUtils
     ) throws TelegramApiException {
         super(botToken);
         this.botName = botName;
         this.updateDispatcher = updateDispatcher;
+        this.multiUpdatesDispatcher = multiUpdatesDispatcher;
         this.messageUtils = messageUtils;
         telegramBotsApi.registerBot(this);
     }
@@ -50,4 +54,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         updateDispatcher.distribute(update);
     }
 
+    @Override
+    public void onUpdatesReceived(List<Update> updates) {
+        if (updates.size() < 2) {
+            super.onUpdatesReceived(updates);
+        } else {
+            multiUpdatesDispatcher.distribute(updates);
+        }
+    }
 }
