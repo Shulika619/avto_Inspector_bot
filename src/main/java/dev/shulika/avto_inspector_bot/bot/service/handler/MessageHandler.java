@@ -56,7 +56,6 @@ public class MessageHandler {
 
         String text = message.getText();
         UserAdData userAdData = dataCache.getDataMap().get(chatId);
-        log.info("+++ MessageHandler :: distribute:: state-{} now", state);
 
         switch (state) {
             case 0 -> {
@@ -116,8 +115,6 @@ public class MessageHandler {
             }
             default -> {
                 log.info("--- MessageHandler :: distribute:: default");
-//                messageUtils.sendMessageWithText(chatId, userAdData.toString());
-//                dataCache.removeUserAdData(chatId);
             }
         }
     }
@@ -128,10 +125,8 @@ public class MessageHandler {
         Integer contentSize = userAdData.getPhoto().size();
         List<String> photosId = userAdData.getPhoto();
         if (contentSize == 1) {
-            System.out.println("===== contentSize = 1");
             messageUtils.sendPhotoMessage(chatId, userAdData.toString(), photosId.get(0));
         } else {
-            System.out.println("===== contentSize = " + contentSize);
             messageUtils.sendPhotoMediaGroup(chatId, userAdData.toString(), photosId);
         }
         dataCache.removeUserAdData(chatId);

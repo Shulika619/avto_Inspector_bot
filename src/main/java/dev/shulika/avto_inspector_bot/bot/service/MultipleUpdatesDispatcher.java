@@ -23,7 +23,6 @@ public class MultipleUpdatesDispatcher {
         this.messageHandler = messageHandler;
     }
 
-
     public void distribute(List<Update> updates){
         log.info("--- IN MultipleUpdatesDispatcher :: distribute");
         List<String> fileIdList = updates.stream()
@@ -34,7 +33,6 @@ public class MultipleUpdatesDispatcher {
                         .orElse(null)
                         .getFileId())
                 .collect(Collectors.toList());
-        log.info("<~~~~~~> List fileId from Photo = {}", fileIdList );
         messageHandler.finish(updates.get(0).getMessage().getChatId());
     }
 

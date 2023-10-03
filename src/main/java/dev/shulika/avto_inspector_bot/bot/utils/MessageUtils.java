@@ -3,12 +3,10 @@ package dev.shulika.avto_inspector_bot.bot.utils;
 import dev.shulika.avto_inspector_bot.bot.TelegramBot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.media.InputMedia;
 import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -18,7 +16,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.*;
@@ -33,7 +30,7 @@ public class MessageUtils {
         this.telegramBot = telegramBot;
     }
 
-    public void sendStartMessage(Long chatId){
+    public void sendStartMessage(Long chatId) {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
@@ -86,7 +83,7 @@ public class MessageUtils {
         executeSendMessage(sendMessage);
     }
 
-    public void sendPhotoMessage(Long chatId, String caption, String fileId){
+    public void sendPhotoMessage(Long chatId, String caption, String fileId) {
         SendPhoto sendPhoto = SendPhoto.builder()
                 .chatId(chatId)
                 .photo(new InputFile(fileId))
@@ -101,11 +98,11 @@ public class MessageUtils {
         }
     }
 
-    public void sendPhotoMediaGroup(Long chatId, String caption, List<String> filesId){
+    public void sendPhotoMediaGroup(Long chatId, String caption, List<String> filesId) {
         List<InputMedia> medias = filesId.stream()
                 .map(fileId -> InputMediaPhoto.builder()
-                       .media(fileId)
-                       .build())
+                        .media(fileId)
+                        .build())
                 .collect(Collectors.toList());
         medias.get(0).setCaption(caption);
         SendMediaGroup sendMediaGroup = SendMediaGroup.builder()
