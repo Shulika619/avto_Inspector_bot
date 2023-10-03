@@ -3,8 +3,14 @@ package dev.shulika.avto_inspector_bot.bot.utils;
 import dev.shulika.avto_inspector_bot.bot.TelegramBot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
+import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.media.InputMedia;
+import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -12,6 +18,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.*;
 
@@ -76,6 +84,42 @@ public class MessageUtils {
         inlineKeyboardMarkup.setKeyboard(keyboard);
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         executeSendMessage(sendMessage);
+    }
+
+    public void sendPhotoMessage(Long chatId, String caption, String fileId){
+        SendPhoto sendPhoto = SendPhoto.builder()
+                .chatId(chatId)
+                .photo(new InputFile(fileId))
+                .caption(caption)
+                .build();
+
+        try {
+            telegramBot.execute(sendPhoto);
+            log.info("+++ IN MessageUtils :: execute sendPhotoMessage :: COMPLETE");
+        } catch (TelegramApiException e) {
+            log.error("--- IN MessageUtils :: execute sendPhotoMessage :: FAIL - ", e);
+        }
+    }
+
+    public void sendPhotoMediaGroup(Long chatId, String caption, List<String> filesId){
+        List<InputMedia> medias = filesId.stream()
+                .map(fileId -> InputMediaPhoto.builder()
+                       .media(fileId)
+                       .caption(caption)
+                       .build())
+                .collect(Collectors.toList());
+
+        SendMediaGroup sendMediaGroup = SendMediaGroup.builder()
+                .chatId(chatId)
+                .medias(medias)
+                .build();
+
+        try {
+            telegramBot.execute(sendMediaGroup);
+            log.info("+++ IN MessageUtils :: execute sendPhotoMediaGroup :: COMPLETE");
+        } catch (TelegramApiException e) {
+            log.error("--- MessageUtils :: sendPhotoMediaGroup :: FAIL - Can't send", e);
+        }
     }
 
 //    public void sendMessageWithBtn(Message message, String btnText, String callBackData, String text) {

@@ -62,4 +62,5 @@ public class TelegramBot extends TelegramLongPollingBot {
             multiUpdatesDispatcher.distribute(updates);
         }
     }
+
 }

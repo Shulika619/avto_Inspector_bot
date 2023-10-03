@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.List;
+
 import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.*;
 
 @Service
@@ -28,18 +30,18 @@ public class MessageHandler {
     }
 
     public void back(Message message, Integer state) {
-        log.info("<++ MessageHandler :: back:: from state-{} to state-{}", state, state-1);
+        log.info("<++ MessageHandler :: back:: from state-{} to state-{}", state, state - 1);
         Long chatId = message.getChatId();
         dataCache.decrementState(chatId, state);
         if (state < 3)
             distribute(message);
         else
-            messageUtils.sendMessageQuestion(chatId, QUESTIONS_LIST.get(state-2), state-1);
+            messageUtils.sendMessageQuestion(chatId, QUESTIONS_LIST.get(state - 2), state - 1);
     }
 
     public void runQuestion(Long chatId, Integer state, Integer questionNumber) {
         dataCache.incrementState(chatId, state);
-        messageUtils.sendMessageQuestion(chatId, QUESTIONS_LIST.get(questionNumber-1), state);
+        messageUtils.sendMessageQuestion(chatId, QUESTIONS_LIST.get(questionNumber - 1), state);
     }
 
     public void distribute(Message message) {
@@ -120,11 +122,18 @@ public class MessageHandler {
         }
     }
 
-    public void finish(Long chatId){
+    public void finish(Long chatId) {
         log.info("+++ MessageHandler :: finish :: send msg and delete cache");
         UserAdData userAdData = dataCache.getDataMap().get(chatId);
-        messageUtils.sendMessageWithText(chatId, userAdData.toString());
-        System.out.println("==== PhotoID = " + userAdData.getPhoto());
+        Integer contentSize = userAdData.getPhoto().size();
+        List<String> photosId = userAdData.getPhoto();
+        if (contentSize == 1) {
+            System.out.println("===== contentSize = 1");
+            messageUtils.sendPhotoMessage(chatId, userAdData.toString(), photosId.get(0));
+        } else {
+            System.out.println("===== contentSize = " + contentSize);
+            messageUtils.sendPhotoMediaGroup(chatId, userAdData.toString(), photosId);
+        }
         dataCache.removeUserAdData(chatId);
     }
 

@@ -14,9 +14,11 @@ import java.util.List;
 public class PhotoHandler {
 
     private final UsersAdsDataCache dataCache;
+    private final MessageHandler messageHandler;
 
-    public PhotoHandler(UsersAdsDataCache dataCache) {
+    public PhotoHandler(UsersAdsDataCache dataCache, MessageHandler messageHandler) {
         this.dataCache = dataCache;
+        this.messageHandler = messageHandler;
     }
 
     public void distribute(Message message) {
@@ -35,13 +37,14 @@ public class PhotoHandler {
                 .orElse(null);
         String fileId = maxSizePhoto.getFileId();
 
-        if(mediaGroupId.isEmpty()){
+        dataCache.addPhoto(chatId, fileId);
+
+        if(mediaGroupId == null){
             log.info("--- IN PhotoHandler :: distribute :: MediaGroupId null - single photo");
-            // TODO: Process 1 photo
+            messageHandler.finish(chatId);
         } else {
             log.info("+++ IN PhotoHandler :: distribute :: MediaGroupId - {}", mediaGroupId);
-            dataCache.addPhoto(chatId, fileId);
-
+//            dataCache.addPhoto(chatId, fileId);
         }
     }
 
