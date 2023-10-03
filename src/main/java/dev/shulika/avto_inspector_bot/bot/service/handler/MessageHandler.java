@@ -109,6 +109,7 @@ public class MessageHandler {
             default -> {
                 log.info("--- MessageHandler :: distribute:: default");
                 messageUtils.sendMessageWithText(chatId, userAdData.toString());
+                System.out.println("==== FOTOS - " + userAdData.getPhoto());
                 dataCache.removeUserAdData(chatId);
             }
         }

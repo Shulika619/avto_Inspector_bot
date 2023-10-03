@@ -4,7 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,13 +26,13 @@ public class UserAdData {
     private String description;
     private String phone;
     private String messengers;
-    private String photo;
+    private List<String> photo;
 
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder()
                 .append("Марка/модель: " + makeModel + "\n")
-                .append("Цена: "+ price + "\n")
+                .append("Цена: " + price + "\n")
                 .append("Город: " + city + "\n")
                 .append("Год выпуска: " + year + "\n")
                 .append("Пробег: " + km + "\n")
@@ -44,4 +45,5 @@ public class UserAdData {
                 .append("WhatsApp, Viber, Telegram: " + messengers + "\n");
         return stringBuilder.toString();
     }
+
 }

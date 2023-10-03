@@ -3,6 +3,7 @@ package dev.shulika.avto_inspector_bot.bot.service;
 import dev.shulika.avto_inspector_bot.bot.service.handler.CallbackQueryHandler;
 import dev.shulika.avto_inspector_bot.bot.service.handler.CommandHandler;
 import dev.shulika.avto_inspector_bot.bot.service.handler.MessageHandler;
+import dev.shulika.avto_inspector_bot.bot.service.handler.PhotoHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -15,13 +16,15 @@ public class UpdateDispatcher {
     private final MessageHandler messageHandler;
     private final CommandHandler commandHandler;
     private final CallbackQueryHandler callbackQueryHandler;
+    private final PhotoHandler photoHandler;
 
     public UpdateDispatcher(MessageHandler messageHandler,
                             CommandHandler commandHandler,
-                            CallbackQueryHandler callbackQueryHandler) {
+                            CallbackQueryHandler callbackQueryHandler, PhotoHandler photoHandler) {
         this.messageHandler = messageHandler;
         this.commandHandler = commandHandler;
         this.callbackQueryHandler = callbackQueryHandler;
+        this.photoHandler = photoHandler;
     }
 
     public void distribute(Update update) {
@@ -36,7 +39,8 @@ public class UpdateDispatcher {
                     messageHandler.distribute(message);
                 }
             } else if (update.getMessage().hasPhoto()) {
-                log.info("+++ IN UpdateDispatcher :: distribute :: hasMessage :: hasPhoto :: ? :: Caption - {}",update.getMessage().getCaption());
+                log.info("+++ IN UpdateDispatcher :: distribute :: hasMessage :: hasPhoto :: photoHandler");
+                photoHandler.distribute(message);
             } else if (update.getMessage().hasDocument()) {
                 log.info("+++ IN UpdateDispatcher :: distribute :: hasMessage :: hasDocument :: ?");
             } else {
