@@ -9,7 +9,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
 
-import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.*;
+import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.QUESTIONS_LIST;
+import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.UNSUPPORTED_COMMAND;
 
 @Service
 @Slf4j
@@ -51,6 +52,7 @@ public class MessageHandler {
 
         if (state == null) {
             log.info("--- MessageHandler :: distribute:: state null");
+            messageUtils.sendMessageWithText(chatId, UNSUPPORTED_COMMAND);
             return;
         }
 
@@ -129,6 +131,7 @@ public class MessageHandler {
         } else {
             messageUtils.sendPhotoMediaGroup(chatId, userAdData.toString(), photosId);
         }
+        messageUtils.sendFinishMessage(chatId);
         dataCache.removeUserAdData(chatId);
     }
 

@@ -2,7 +2,9 @@ package dev.shulika.avto_inspector_bot.bot.utils;
 
 import dev.shulika.avto_inspector_bot.bot.TelegramBot;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -16,6 +18,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.*;
@@ -25,6 +28,15 @@ import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.*;
 public class MessageUtils {
 
     private TelegramBot telegramBot;
+
+    private final Long ADMIN_CHAT_ID;
+    private final String ADMIN_LINK;
+
+    public MessageUtils(@Value("${bot.admin-chatId}") Long ADMIN_CHAT_ID,
+                        @Value("${bot.admin-link}") String ADMIN_LINK) {
+        this.ADMIN_CHAT_ID = ADMIN_CHAT_ID;
+        this.ADMIN_LINK = ADMIN_LINK;
+    }
 
     public void registerBot(TelegramBot telegramBot) {
         this.telegramBot = telegramBot;
@@ -51,6 +63,32 @@ public class MessageUtils {
         var sendMessage = SendMessage.builder()
                 .text(START_MSG)
                 .chatId(chatId)
+                .build();
+        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+        executeSendMessage(sendMessage);
+    }
+
+    public void sendFinishMessage(Long chatId) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        keyboard.add(Collections.singletonList(
+                InlineKeyboardButton.builder()
+                        .text(BTN_SEND_PROOF)
+                        .url(ADMIN_LINK)
+                        .build()
+        ));
+        keyboard.add(Collections.singletonList(
+                InlineKeyboardButton.builder()
+                        .text(BTN_START_ADS)
+                        .callbackData(BTN_START_ADS_CALLBACK + ":" + chatId)
+                        .build()
+        ));
+        inlineKeyboardMarkup.setKeyboard(keyboard);
+
+        var sendMessage = SendMessage.builder()
+                .text(FINISH_MSG)
+                .chatId(chatId)
+                .parseMode(ParseMode.MARKDOWNV2)
                 .build();
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         executeSendMessage(sendMessage);
@@ -84,12 +122,12 @@ public class MessageUtils {
     }
 
     public void sendPhotoMessage(Long chatId, String caption, String fileId) {
+//        int uniqueID = new Random().nextInt(1000, 9999);
         SendPhoto sendPhoto = SendPhoto.builder()
-                .chatId(chatId)
+                .chatId(ADMIN_CHAT_ID)
                 .photo(new InputFile(fileId))
                 .caption(caption)
                 .build();
-
         try {
             telegramBot.execute(sendPhoto);
             log.info("+++ IN MessageUtils :: execute sendPhotoMessage :: COMPLETE");
@@ -99,14 +137,16 @@ public class MessageUtils {
     }
 
     public void sendPhotoMediaGroup(Long chatId, String caption, List<String> filesId) {
+//        int uniqueID = new Random().nextInt(1000, 9999);
         List<InputMedia> medias = filesId.stream()
                 .map(fileId -> InputMediaPhoto.builder()
                         .media(fileId)
                         .build())
                 .collect(Collectors.toList());
         medias.get(0).setCaption(caption);
+
         SendMediaGroup sendMediaGroup = SendMediaGroup.builder()
-                .chatId(chatId)
+                .chatId(ADMIN_CHAT_ID)
                 .medias(medias)
                 .build();
         try {
@@ -116,52 +156,6 @@ public class MessageUtils {
             log.error("--- MessageUtils :: sendPhotoMediaGroup :: FAIL - Can't send", e);
         }
     }
-
-//    public void sendMessageWithBtn(Message message, String btnText, String callBackData, String text) {
-//
-//        var chatId = message.getChatId();
-//        var userName = message.getChat().getUserName();
-//
-//        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-//        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-//        keyboard.add(Collections.singletonList(
-//                InlineKeyboardButton.builder()
-//                        .text(btnText)
-//                        .callbackData(callBackData + ":" + userName)
-//                        .build()
-//        ));
-//        inlineKeyboardMarkup.setKeyboard(keyboard);
-//
-//        var sendMessage = SendMessage.builder()
-//                .text(text)
-//                .chatId(chatId)
-//                .build();
-//        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-//        executeSendMessage(sendMessage);
-//    }
-//
-//    public void SendMessageWithBtnLink(Message message, String btnText, String url, String text) {
-//
-//        var chatId = message.getChatId();
-//        var userName = message.getChat().getUserName();
-//
-//        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-//        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-//        keyboard.add(Collections.singletonList(
-//                InlineKeyboardButton.builder()
-//                        .text(btnText)
-//                        .url(url)
-//                        .build()
-//        ));
-//        inlineKeyboardMarkup.setKeyboard(keyboard);
-//
-//        var sendMessage = SendMessage.builder()
-//                .text(text)
-//                .chatId(chatId)
-//                .build();
-//        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-//        executeSendMessage(sendMessage);
-//    }
 
     private void executeSendMessage(SendMessage sendMessage) {
         try {
