@@ -15,10 +15,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.*;
@@ -85,13 +85,14 @@ public class MessageUtils {
         ));
         inlineKeyboardMarkup.setKeyboard(keyboard);
 
-        var sendMessage = SendMessage.builder()
-                .text(FINISH_MSG)
+        SendPhoto sendPhoto = SendPhoto.builder()
                 .chatId(chatId)
+                .photo(new InputFile(new File("src/main/resources/static/images/ads_finish.jpg")))
+                .caption(FINISH_MSG)
                 .parseMode(ParseMode.MARKDOWNV2)
                 .build();
-        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-        executeSendMessage(sendMessage);
+        sendPhoto.setReplyMarkup(inlineKeyboardMarkup);
+        executeSendPhoto(sendPhoto);
     }
 
     public void sendMessageWithText(Long chatId, String text) {
@@ -121,22 +122,17 @@ public class MessageUtils {
         executeSendMessage(sendMessage);
     }
 
-    public void sendPhotoMessage(Long chatId, String caption, String fileId) {
+    public void sendPhotoMessageToAdmin(String caption, String fileId) {
 //        int uniqueID = new Random().nextInt(1000, 9999);
         SendPhoto sendPhoto = SendPhoto.builder()
                 .chatId(ADMIN_CHAT_ID)
                 .photo(new InputFile(fileId))
                 .caption(caption)
                 .build();
-        try {
-            telegramBot.execute(sendPhoto);
-            log.info("+++ IN MessageUtils :: execute sendPhotoMessage :: COMPLETE");
-        } catch (TelegramApiException e) {
-            log.error("--- IN MessageUtils :: execute sendPhotoMessage :: FAIL - ", e);
-        }
+        executeSendPhoto(sendPhoto);
     }
 
-    public void sendPhotoMediaGroup(Long chatId, String caption, List<String> filesId) {
+    public void sendPhotoMediaGroupToAdmin(String caption, List<String> filesId) {
 //        int uniqueID = new Random().nextInt(1000, 9999);
         List<InputMedia> medias = filesId.stream()
                 .map(fileId -> InputMediaPhoto.builder()
@@ -154,6 +150,15 @@ public class MessageUtils {
             log.info("+++ IN MessageUtils :: execute sendPhotoMediaGroup :: COMPLETE");
         } catch (TelegramApiException e) {
             log.error("--- MessageUtils :: sendPhotoMediaGroup :: FAIL - Can't send", e);
+        }
+    }
+
+    private void executeSendPhoto(SendPhoto sendPhoto) {
+        try {
+            telegramBot.execute(sendPhoto);
+            log.info("+++ IN MessageUtils :: executeSendPhoto :: COMPLETE");
+        } catch (TelegramApiException e) {
+            log.error("--- IN MessageUtils :: executeSendPhoto :: FAIL - ", e);
         }
     }
 

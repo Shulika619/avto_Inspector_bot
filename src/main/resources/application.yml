@@ -4,7 +4,6 @@ server:
 bot:
   name: avto_Inspector_bot
   token: 6518433545:AAEPpXf6v3kntj2Yfp9SW4OAQG4a93pgVgs
-  admin-chatId: 5636109529
-# Test
-#  admin-chatId: 5580936952
+  admin-chatId: 5636109529 # Prod
+#  admin-chatId: 5580936952  # Test
   admin-link: https://t.me/LPR_Inspectors

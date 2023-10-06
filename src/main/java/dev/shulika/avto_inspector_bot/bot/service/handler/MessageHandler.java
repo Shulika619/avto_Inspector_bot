@@ -127,9 +127,9 @@ public class MessageHandler {
         Integer contentSize = userAdData.getPhoto().size();
         List<String> photosId = userAdData.getPhoto();
         if (contentSize == 1) {
-            messageUtils.sendPhotoMessage(chatId, userAdData.toString(), photosId.get(0));
+            messageUtils.sendPhotoMessageToAdmin(userAdData.toString(), photosId.get(0));
         } else {
-            messageUtils.sendPhotoMediaGroup(chatId, userAdData.toString(), photosId);
+            messageUtils.sendPhotoMediaGroupToAdmin(userAdData.toString(), photosId);
         }
         messageUtils.sendFinishMessage(chatId);
         dataCache.removeUserAdData(chatId);

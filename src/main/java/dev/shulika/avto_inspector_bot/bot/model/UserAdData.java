@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -31,7 +30,8 @@ public class UserAdData {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder()
-                .append("Марка/модель: " + makeModel + "\n")
+                .append(makeModel + "\n")
+                .append("- - - - - - - - - - - - - - - - - - - - - - - - - - -\n")
                 .append("Цена: " + price + "\n")
                 .append("Город: " + city + "\n")
                 .append("Год выпуска: " + year + "\n")
@@ -40,9 +40,10 @@ public class UserAdData {
                 .append("Топливо: " + fuelType + "\n")
                 .append("КПП: " + transmission + "\n")
                 .append("Собственник: " + owner + "\n")
-                .append("Описание от продавца: " + description + "\n")
+                .append("- - - - - - - - - - - - - - - - - - - - - - - - - - -\n")
+                .append("ОПИСАНИЕ ОТ ПРОДАВЦА: \n" + description + "\n")
                 .append("Номер тел: " + phone + "\n")
-                .append("WhatsApp, Viber, Telegram: " + messengers + "\n");
+                .append("Telegram: " + messengers + "\n");
         return stringBuilder.toString();
     }
 
