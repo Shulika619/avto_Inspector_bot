@@ -14,7 +14,7 @@ contact - Контакты
     public static final String COMMAND_CONTACT = "/contact";
 
     // COMMON Buttons and CallBackData ---------------------------------
-    public static final String BTN_START_ADS = "➕ Разместить обьявление";
+    public static final String BTN_START_ADS = "➕ Разместить новое обьявление";
     public static final String BTN_START_ADS_CALLBACK = "START_ADS";
     public static final String BTN_BACK = "⬅ Назад";
     public static final String BTN_BACK_CALLBACK = "BACK";
