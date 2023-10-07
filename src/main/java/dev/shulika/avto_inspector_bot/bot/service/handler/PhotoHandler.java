@@ -9,8 +9,6 @@ import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import java.util.Comparator;
 import java.util.List;
 
-import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.UNSUPPORTED_COMMAND;
-
 @Service
 @Slf4j
 public class PhotoHandler {
@@ -41,7 +39,7 @@ public class PhotoHandler {
 
         dataCache.addPhoto(chatId, fileId);
 
-        if(mediaGroupId == null){
+        if (mediaGroupId == null) {
             log.info("--- IN PhotoHandler :: distribute :: MediaGroupId null - single photo");
             messageHandler.finish(chatId);
         } else {

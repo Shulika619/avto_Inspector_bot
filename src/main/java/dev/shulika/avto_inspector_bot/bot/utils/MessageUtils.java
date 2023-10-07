@@ -1,6 +1,7 @@
 package dev.shulika.avto_inspector_bot.bot.utils;
 
 import dev.shulika.avto_inspector_bot.bot.TelegramBot;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -126,6 +126,7 @@ public class MessageUtils {
         }
     }
 
+    @SneakyThrows
     public void sendFinishMessage(Long chatId) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
@@ -143,9 +144,11 @@ public class MessageUtils {
         ));
         inlineKeyboardMarkup.setKeyboard(keyboard);
 
+        var imgPath = "/static/images/ads_finish.jpg";
         SendPhoto sendPhoto = SendPhoto.builder()
                 .chatId(chatId)
-                .photo(new InputFile(new File("src/main/resources/static/images/ads_finish.jpg")))
+                .photo(new InputFile(getClass().getClassLoader().getResourceAsStream(imgPath), imgPath))
+//                .photo(new InputFile(new File("src/main/resources/static/images/ads_finish.jpg")))
                 .caption(FINISH_MSG)
                 .parseMode(ParseMode.MARKDOWNV2)
                 .build();

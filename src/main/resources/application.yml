@@ -7,3 +7,14 @@ bot:
   admin-chatId: 5636109529 # Prod
 #  admin-chatId: 5580936952  # Test
   admin-link: https://t.me/LPR_Inspectors
+
+logging:
+  level:
+    org:
+      springframework:
+        web: debug
+        jdbc: debug
+    root: info
+  file:
+    path: './var/log'
+    name: ${logging.file.path}/bot.log
