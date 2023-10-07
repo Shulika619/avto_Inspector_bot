@@ -30,26 +30,31 @@ public class MessageHandler {
         distribute(message);
     }
 
-    public void back(Message message, Integer state) {
-        log.info("<++ MessageHandler :: back:: from state-{} to state-{}", state, state - 1);
+    public void back(Message message) {
         Long chatId = message.getChatId();
-        dataCache.decrementState(chatId, state);
-        if (state < 3)
-            distribute(message);
-        else
-            messageUtils.sendMessageQuestion(chatId, QUESTIONS_LIST.get(state - 2), state - 1);
+        dataCache.decrementState(chatId);
+        Integer state = dataCache.checkState(chatId);
+        log.info("<++ MessageHandler :: back:: from state-{} to state-{}", state+1, state);
+
+        if (state <= 1) {
+            log.info("<++ MessageHandler :: back:: state <= 1 :: removeUserAdData and sendStartMessage");
+            dataCache.removeUserAdData(chatId);
+            messageUtils.sendStartMessage(chatId);
+        }
+        else {
+            messageUtils.sendMessageQuestion(chatId, QUESTIONS_LIST.get(state - 2));
+        }
     }
 
     public void runQuestion(Long chatId, Integer state, Integer questionNumber) {
         dataCache.incrementState(chatId, state);
-        messageUtils.sendMessageQuestion(chatId, QUESTIONS_LIST.get(questionNumber - 1), state);
+        messageUtils.sendMessageQuestion(chatId, QUESTIONS_LIST.get(questionNumber - 1));
     }
 
     public void distribute(Message message) {
 
         Long chatId = message.getChatId();
         Integer state = dataCache.checkState(chatId);
-
         if (state == null) {
             log.info("--- MessageHandler :: distribute:: state null");
             messageUtils.sendMessageWithText(chatId, UNSUPPORTED_COMMAND);
@@ -60,10 +65,6 @@ public class MessageHandler {
         UserAdData userAdData = dataCache.getDataMap().get(chatId);
 
         switch (state) {
-            case 0 -> {
-                dataCache.removeUserAdData(chatId);
-                messageUtils.sendStartMessage(chatId);
-            }
             case 1 -> {
                 runQuestion(chatId, state, 1);
             }

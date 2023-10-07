@@ -36,8 +36,9 @@ public class UsersAdsDataCache {
         dataMap.get(chatId).setState(state + 1);
     }
 
-    public void decrementState(Long chatId, Integer state) {
-        dataMap.get(chatId).setState(state - 1);
+    public void decrementState(Long chatId) {
+        Integer currentState = dataMap.get(chatId).getState();
+        dataMap.get(chatId).setState(currentState - 1);
     }
 
     public void addPhoto(Long chatId, String fileId) {

@@ -42,6 +42,14 @@ public class MessageUtils {
         this.telegramBot = telegramBot;
     }
 
+    public void sendMessageWithText(Long chatId, String text) {
+        SendMessage sendMessage = SendMessage.builder()
+                .text(text)
+                .chatId(chatId)
+                .build();
+        executeSendMessage(sendMessage);
+    }
+
     public void sendStartMessage(Long chatId) {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -49,7 +57,7 @@ public class MessageUtils {
         keyboard.add(Collections.singletonList(
                 InlineKeyboardButton.builder()
                         .text(BTN_START_ADS)
-                        .callbackData(BTN_START_ADS_CALLBACK + ":" + chatId)
+                        .callbackData(BTN_START_ADS_CALLBACK)
                         .build()
         ));
         keyboard.add(Collections.singletonList(
@@ -68,42 +76,7 @@ public class MessageUtils {
         executeSendMessage(sendMessage);
     }
 
-    public void sendFinishMessage(Long chatId) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        keyboard.add(Collections.singletonList(
-                InlineKeyboardButton.builder()
-                        .text(BTN_SEND_PROOF)
-                        .url(ADMIN_LINK)
-                        .build()
-        ));
-        keyboard.add(Collections.singletonList(
-                InlineKeyboardButton.builder()
-                        .text(BTN_START_ADS)
-                        .callbackData(BTN_START_ADS_CALLBACK + ":" + chatId)
-                        .build()
-        ));
-        inlineKeyboardMarkup.setKeyboard(keyboard);
-
-        SendPhoto sendPhoto = SendPhoto.builder()
-                .chatId(chatId)
-                .photo(new InputFile(new File("src/main/resources/static/images/ads_finish.jpg")))
-                .caption(FINISH_MSG)
-                .parseMode(ParseMode.MARKDOWNV2)
-                .build();
-        sendPhoto.setReplyMarkup(inlineKeyboardMarkup);
-        executeSendPhoto(sendPhoto);
-    }
-
-    public void sendMessageWithText(Long chatId, String text) {
-        SendMessage sendMessage = SendMessage.builder()
-                .text(text)
-                .chatId(chatId)
-                .build();
-        executeSendMessage(sendMessage);
-    }
-
-    public void sendMessageQuestion(Long chatId, String text, Integer currentState) {
+    public void sendMessageQuestion(Long chatId, String text) {
         SendMessage sendMessage = SendMessage.builder()
                 .text(text)
                 .chatId(chatId)
@@ -114,7 +87,7 @@ public class MessageUtils {
         keyboard.add(Collections.singletonList(
                 InlineKeyboardButton.builder()
                         .text(BTN_BACK)
-                        .callbackData(BTN_BACK_CALLBACK + ":" + currentState)
+                        .callbackData(BTN_BACK_CALLBACK)
                         .build()
         ));
         inlineKeyboardMarkup.setKeyboard(keyboard);
@@ -151,6 +124,33 @@ public class MessageUtils {
         } catch (TelegramApiException e) {
             log.error("--- MessageUtils :: sendPhotoMediaGroup :: FAIL - Can't send", e);
         }
+    }
+
+    public void sendFinishMessage(Long chatId) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        keyboard.add(Collections.singletonList(
+                InlineKeyboardButton.builder()
+                        .text(BTN_SEND_PROOF)
+                        .url(ADMIN_LINK)
+                        .build()
+        ));
+        keyboard.add(Collections.singletonList(
+                InlineKeyboardButton.builder()
+                        .text(BTN_START_ADS)
+                        .callbackData(BTN_START_ADS_CALLBACK)
+                        .build()
+        ));
+        inlineKeyboardMarkup.setKeyboard(keyboard);
+
+        SendPhoto sendPhoto = SendPhoto.builder()
+                .chatId(chatId)
+                .photo(new InputFile(new File("src/main/resources/static/images/ads_finish.jpg")))
+                .caption(FINISH_MSG)
+                .parseMode(ParseMode.MARKDOWNV2)
+                .build();
+        sendPhoto.setReplyMarkup(inlineKeyboardMarkup);
+        executeSendPhoto(sendPhoto);
     }
 
     private void executeSendPhoto(SendPhoto sendPhoto) {

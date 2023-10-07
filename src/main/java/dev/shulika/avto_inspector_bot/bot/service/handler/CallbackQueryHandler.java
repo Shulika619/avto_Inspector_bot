@@ -19,13 +19,13 @@ public class CallbackQueryHandler {
     public void distribute(CallbackQuery callbackQuery) {
         String queryData = callbackQuery.getData();
         Message message = callbackQuery.getMessage();
-        String[] param = queryData.split(":");
-        String action = param[0];
-        String value = param[1];
+//        String[] param = queryData.split(":");
+//        String action = param[0];
+//        String value = param[1];
 
-        switch (action) {
+        switch (queryData) {
             case BTN_START_ADS_CALLBACK -> messageHandler.start(message);
-            case BTN_BACK_CALLBACK -> messageHandler.back(message, Integer.parseInt(value));
+            case BTN_BACK_CALLBACK -> messageHandler.back(message);
         }
     }
 
