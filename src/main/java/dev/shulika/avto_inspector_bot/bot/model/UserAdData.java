@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 public class UserAdData {
     private Integer state;
+    private String firstName;
     private String userName;
 
     private String makeModel;
@@ -43,7 +44,8 @@ public class UserAdData {
                 .append("- - - - - - - - - - - - - - - - - - - - - - - - - - -\n")
                 .append("ОПИСАНИЕ ОТ ПРОДАВЦА: \n" + description + "\n")
                 .append("Номер тел: " + phone + "\n")
-                .append("Telegram: " + messengers + "\n");
+                .append("Telegram: " + messengers + "\n\n")
+                .append("Отправитель: " + firstName + " / @" + userName + "\n");
         return stringBuilder.toString();
     }
 
