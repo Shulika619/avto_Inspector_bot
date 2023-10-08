@@ -135,6 +135,11 @@ public class MessageUtils {
                         .text(BTN_SEND_PROOF)
                         .url(ADMIN_LINK)
                         .build()
+        ));  keyboard.add(Collections.singletonList(
+                InlineKeyboardButton.builder()
+                        .text(BTN_UPDATE_ADS)
+                        .url(ADMIN_LINK)
+                        .build()
         ));
         keyboard.add(Collections.singletonList(
                 InlineKeyboardButton.builder()
