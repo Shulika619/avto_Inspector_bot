@@ -24,9 +24,10 @@ public class UsersAdsDataCache {
         return userAdData.getState();
     }
 
-    public void createUserAdData(Long chatId, String userName) {
+    public void createUserAdData(Long chatId, String firstName, String userName) {
         dataMap.put(chatId, UserAdData.builder()
                 .state(1)
+                .firstName(firstName)
                 .userName(userName)
                 .photo(new ArrayList<>())
                 .build());

@@ -26,7 +26,10 @@ public class MessageHandler {
 
     public void start(Message message) {
         log.info("++> MessageHandler :: start :: state null - create and set state1 now");
-        dataCache.createUserAdData(message.getChatId(), message.getChat().getUserName());
+        dataCache.createUserAdData(
+                message.getChatId(),
+                message.getChat().getFirstName(),
+                message.getChat().getUserName());
         distribute(message);
     }
 
@@ -34,14 +37,13 @@ public class MessageHandler {
         Long chatId = message.getChatId();
         dataCache.decrementState(chatId);
         Integer state = dataCache.checkState(chatId);
-        log.info("<++ MessageHandler :: back:: from state-{} to state-{}", state+1, state);
+        log.info("<++ MessageHandler :: back:: from state-{} to state-{}", state + 1, state);
 
         if (state <= 1) {
             log.info("<++ MessageHandler :: back:: state <= 1 :: removeUserAdData and sendStartMessage");
             dataCache.removeUserAdData(chatId);
             messageUtils.sendStartMessage(chatId);
-        }
-        else {
+        } else {
             messageUtils.sendMessageQuestion(chatId, QUESTIONS_LIST.get(state - 2));
         }
     }
