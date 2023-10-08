@@ -20,6 +20,7 @@ contact - Контакты
     public static final String BTN_BACK_CALLBACK = "BACK";
     public static final String BTN_CONTACT = "✏️ Нечего не понял, хочу написать администратору";
     public static final String BTN_SEND_PROOF = "➡ Отправить скрин/чек оплаты";
+    public static final String BTN_UPDATE_ADS = "🔄️ Обновить обьявление";
 
     // Messages ---------------------------------------
     public static final String UNSUPPORTED_COMMAND = """
