@@ -1,11 +1,19 @@
 server:
   port: 8081
 
+#Prod
+#bot:
+#  name: avto_Inspector_bot
+#  token: 6518433545:AAEPpXf6v3kntj2Yfp9SW4OAQG4a93pgVgs
+#  admin-chatId: 5636109529
+#  admin-link: https://t.me/LPR_Inspectors
+
+#Test
 bot:
-  name: avto_Inspector_bot
-  token: 6518433545:AAEPpXf6v3kntj2Yfp9SW4OAQG4a93pgVgs
-  admin-chatId: 5636109529 # Prod
-#  admin-chatId: 5580936952  # Test
+  name: test_avto_Inspector_bot
+  token: 5815291268:AAHGE8lQM--dIETJIPZDsXX-HxUlg2Z76B0
+  admin-chatId: 5580936952  # Test
+#    admin-chatId: 5636109529 # Prod - MAX
   admin-link: https://t.me/LPR_Inspectors
 
 logging:
