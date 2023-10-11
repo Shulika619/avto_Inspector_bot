@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.util.List;
 
 import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.QUESTIONS_LIST;
-import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.UNSUPPORTED_COMMAND;
+import static dev.shulika.avto_inspector_bot.bot.utils.BotConst.WRONG_INPUT;
 
 @Service
 @Slf4j
@@ -31,6 +31,16 @@ public class MessageHandler {
                 message.getChat().getFirstName(),
                 message.getChat().getUserName());
         distribute(message);
+    }
+
+    public void repeat(Message message) {
+        log.info("<++> MessageHandler :: repeat :: state back -1");
+        Long chatId = message.getChatId();
+        dataCache.decrementState(chatId);
+        Integer state = dataCache.checkState(chatId);
+
+        messageUtils.sendMessageQuestion(chatId, QUESTIONS_LIST.get(state - 1));
+        dataCache.incrementState(chatId, state);
     }
 
     public void back(Message message) {
@@ -59,7 +69,7 @@ public class MessageHandler {
         Integer state = dataCache.checkState(chatId);
         if (state == null) {
             log.info("--- MessageHandler :: distribute:: state null");
-            messageUtils.sendMessageWithText(chatId, UNSUPPORTED_COMMAND);
+            messageUtils.sendMessageWithText(chatId, WRONG_INPUT);
             return;
         }
 

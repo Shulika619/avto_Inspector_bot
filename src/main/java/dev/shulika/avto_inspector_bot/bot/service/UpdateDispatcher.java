@@ -50,14 +50,13 @@ public class UpdateDispatcher {
                 photoHandler.distribute(message);
             } else {
                 log.info("--- IN UpdateDispatcher :: distribute :: hasMessage :: UNSUPPORTED FORMAT");
-                messageUtils.sendMessageWithText(message.getChatId(), UNSUPPORTED_FORMAT);
+//                messageUtils.sendMessageWithText(message.getChatId(), UNSUPPORTED_FORMAT);
             }
         } else if (update.hasCallbackQuery()) {
             log.info("+++ IN UpdateDispatcher :: distribute :: hasCallbackQuery");
             callbackQueryHandler.distribute(update.getCallbackQuery());
         } else {
-            log.error("--- IN UpdateDispatcher :: " +
-                    "distribute :: is not Message/Callback - {} ---", update);
+            log.error("--- IN UpdateDispatcher :: distribute :: is not Message/Callback - {}", update);
         }
     }
 
