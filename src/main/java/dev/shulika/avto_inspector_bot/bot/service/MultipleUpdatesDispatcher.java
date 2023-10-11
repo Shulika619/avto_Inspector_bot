@@ -43,7 +43,6 @@ public class MultipleUpdatesDispatcher {
         if (state == null) {
             log.info("--- MultipleUpdatesDispatcher :: distribute:: state null");
             messageUtils.sendMessageWithText(chatId, WRONG_INPUT);
-            return;
         } else if (state == 14) {
             log.info("+++ MultipleUpdatesDispatcher :: distribute:: state 14 photo");
             updates.stream()

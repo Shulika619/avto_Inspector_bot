@@ -52,7 +52,6 @@ public class PhotoHandler {
             } else {
                 log.info("+++ IN PhotoHandler :: distribute :: MediaGroupId - {}", mediaGroupId);
             }
-//            messageHandler.repeat(message);
         } else {
             log.info("+++ IN PhotoHandler :: distribute :: state < 14 not photo");
             messageHandler.repeat(message);
