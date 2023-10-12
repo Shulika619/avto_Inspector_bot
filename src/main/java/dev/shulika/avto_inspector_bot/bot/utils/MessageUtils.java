@@ -3,6 +3,7 @@ package dev.shulika.avto_inspector_bot.bot.utils;
 import dev.shulika.avto_inspector_bot.bot.TelegramBot;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
@@ -95,24 +96,32 @@ public class MessageUtils {
         executeSendMessage(sendMessage);
     }
 
-    public void sendPhotoMessageToAdmin(String caption, String fileId) {
+    public void sendPhotoMessageToAdmin(String text, String fileId) {
 //        int uniqueID = new Random().nextInt(1000, 9999);
         SendPhoto sendPhoto = SendPhoto.builder()
                 .chatId(ADMIN_CHAT_ID)
                 .photo(new InputFile(fileId))
-                .caption(caption)
                 .build();
+
+        if (text.length() > 4000) {
+            String cutCaption = StringUtils.abbreviate(text, 4000);
+            sendPhoto.setCaption(cutCaption);
+        } else {
+            sendPhoto.setCaption(text);
+        }
+
         executeSendPhoto(sendPhoto);
+        sendMessageWithText(ADMIN_CHAT_ID, text);
     }
 
-    public void sendPhotoMediaGroupToAdmin(String caption, List<String> filesId) {
+    public void sendPhotoMediaGroupToAdmin(String text, List<String> filesId) {
 //        int uniqueID = new Random().nextInt(1000, 9999);
         List<InputMedia> medias = filesId.stream()
                 .map(fileId -> InputMediaPhoto.builder()
                         .media(fileId)
                         .build())
+                .limit(10)
                 .collect(Collectors.toList());
-        medias.get(0).setCaption(caption);
 
         SendMediaGroup sendMediaGroup = SendMediaGroup.builder()
                 .chatId(ADMIN_CHAT_ID)
@@ -123,6 +132,13 @@ public class MessageUtils {
             log.info("+++ IN MessageUtils :: execute sendPhotoMediaGroup :: COMPLETE");
         } catch (TelegramApiException e) {
             log.error("--- MessageUtils :: sendPhotoMediaGroup :: FAIL - Can't send", e);
+        }
+
+        if (text.length() > 4000) {
+            String cutCaption = StringUtils.abbreviate(text, 4000);
+            sendMessageWithText(ADMIN_CHAT_ID, cutCaption);
+        } else {
+            sendMessageWithText(ADMIN_CHAT_ID, text);
         }
     }
 
@@ -135,7 +151,8 @@ public class MessageUtils {
                         .text(BTN_SEND_PROOF)
                         .url(ADMIN_LINK)
                         .build()
-        ));  keyboard.add(Collections.singletonList(
+        ));
+        keyboard.add(Collections.singletonList(
                 InlineKeyboardButton.builder()
                         .text(BTN_UPDATE_ADS)
                         .url(ADMIN_LINK)
