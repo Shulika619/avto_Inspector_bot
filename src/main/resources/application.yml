@@ -8,14 +8,6 @@ bot:
   admin-chatId: 5636109529
   admin-link: https://t.me/LPR_Inspectors
 
-#Test
-#bot:
-#  name: test_avto_Inspector_bot
-#  token: 5815291268:AAHGE8lQM--dIETJIPZDsXX-HxUlg2Z76B0
-##  admin-chatId: 5580936952  # Test
-#  admin-chatId: 5636109529 # Prod - MAX
-#  admin-link: https://t.me/LPR_Inspectors
-
 logging:
   level:
     org:
