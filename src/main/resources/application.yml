@@ -4,7 +4,7 @@ server:
 #Prod
 bot:
   name: avto_Inspector_bot
-  token: 6518433545:AAEPpXf6v3kntj2Yfp9SW4OAQG4a93pgVgs
+  token: 6518433545:AAGrKiQBhjXAOIFuPXuyUN2U-yTOTNn533U
   admin-chatId: 5636109529
   admin-link: https://t.me/LPR_Inspectors
 
