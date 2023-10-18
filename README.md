@@ -15,4 +15,4 @@ An application for the administration of the Telegram community for the publicat
 - Git/GitHub
 
 ## Video
-[![Watch Video](http://img.youtube.com/vi/bxEYa-btXQ8/0.jpg)]([https://youtu.be/vABzkaImqlo](https://youtube.com/shorts/bxEYa-btXQ8)https://youtube.com/shorts/bxEYa-btXQ8)
+[![Watch Video](http://img.youtube.com/vi/bxEYa-btXQ8/0.jpg)]([https://youtu.be/vABzkaImqlo]([https://youtube.com/shorts/bxEYa-btXQ8](https://youtube.com/shorts/bxEYa-btXQ8)https://youtube.com/shorts/bxEYa-btXQ8)https://youtube.com/shorts/bxEYa-btXQ8)
