@@ -1,12 +1,11 @@
 server:
   port: 8081
 
-#Prod
 bot:
-  name: avto_Inspector_bot
-  token: 6518433545:AAGrKiQBhjXAOIFuPXuyUN2U-yTOTNn533U
-  admin-chatId: 5636109529
-  admin-link: https://t.me/LPR_Inspectors
+  name: ${BOT_NAME}
+  token: ${BOT_TOKEN}
+  admin-chatId: ${BOT_ADMIN_CHATID}
+  admin-link: ${BOT_ADMIN_LINK}
 
 logging:
   level:
@@ -16,5 +15,5 @@ logging:
         jdbc: debug
     root: info
   file:
-    path: './var/log'
+    path: './'
     name: ${logging.file.path}/bot.log
