@@ -15,5 +15,5 @@ logging:
         jdbc: debug
     root: info
   file:
-    path: './'
+    path: './var/log'
     name: ${logging.file.path}/bot.log
