@@ -14,3 +14,5 @@ An application for the administration of the Telegram community for the publicat
 - Maven
 - Git/GitHub
 
+## Video
+[![Watch Video](http://img.youtube.com/vi/bxEYa-btXQ8/0.jpg)](https://youtube.com/shorts/bxEYa-btXQ8)
